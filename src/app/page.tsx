@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, ID, OAuthProvider } from "appwrite";
 import type { Models } from "appwrite";
 
 // interface User {
 //   name: string;
 //   email: string;
-//   password: string; 
+//   password: string;
 // }
 
 const client = new Client();
@@ -22,6 +22,18 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [currentUser, setCurrentUser] = useState<Models.Preferences>();
+
+  const githubLogin = async () => {
+    account.createOAuth2Session(
+      OAuthProvider.Github,
+      "http://localhost:3000/welcome",
+      "http://localhost:3000/",
+    );
+    const session = await account.getSession("current");
+    console.log(session.provider);
+    console.log(session.providerUid);
+    console.log(session.providerAccessToken);
+  };
 
   const handleLogin = async () => {
     try {
@@ -62,11 +74,18 @@ export default function Home() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="button" onClick={handleLogin}>
+        <button type="button" className="button-primary" onClick={handleLogin}>
           Login
         </button>
-        <button type="button" onClick={handleRegister}>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={handleRegister}
+        >
           Register
+        </button>
+        <button type="button" className="button-primary" onClick={githubLogin}>
+          Login with Github
         </button>
       </form>
     </main>

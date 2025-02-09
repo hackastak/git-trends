@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.button-primary {
+  @apply text-white border-white border-2 rounded-lg px-2 py-1 ml-3;
+}
